@@ -1,0 +1,43 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BunnyFrame extends JFrame {
+    private JButton moveButton;
+    private JPanel panel;
+    private JLabel bunnyLabel;
+
+    public BunnyFrame() {
+        super("Bunny Frame");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 400);
+        setLocationRelativeTo(null);
+
+        panel = new JPanel();
+        panel.setLayout(null);
+
+        bunnyLabel = new JLabel(new ImageIcon("bunny.png"));
+        bunnyLabel.setBounds(50, 50, 100, 100);
+        panel.add(bunnyLabel);
+
+        moveButton = new JButton("Move Bunny");
+        moveButton.setBounds(150, 250, 100, 30);
+        moveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (bunnyLabel.getX() < 0) {
+                    bunnyLabel.setLocation(50, 50);
+                } else {
+                    bunnyLabel.setLocation(-100, -100);
+                }
+            }
+        });
+        panel.add(moveButton);
+
+        setContentPane(panel);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new BunnyFrame();
+    }
+}
