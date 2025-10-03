@@ -14,13 +14,13 @@ public class BunnyGame {
             JPanel panel = new JPanel();
             panel.setLayout(null);
 
-            int bunnyWidth = 100;
-            int bunnyHeight = 100;
+            final int bunnyWidth = 100;
+            final int bunnyHeight = 100;
 
             // Load bunny image
             ImageIcon bunnyIcon = null;
             try {
-                URL url = new URL("https://thumbs.dreamstime.com/b/rabbit-hand-drawn-contour-line-drawing-black-white-image-easter-bunny-postcards-printing-fabric-cute-animal-doodles-171134457.jpg");
+                URL url = java.net.URI.create("https://thumbs.dreamstime.com/b/rabbit-hand-drawn-contour-line-drawing-black-white-image-easter-bunny-postcards-printing-fabric-cute-animal-doodles-171134457.jpg").toURL();
                 Image img = new ImageIcon(url).getImage();
                 Image scaledImg = img.getScaledInstance(bunnyWidth, bunnyHeight, Image.SCALE_SMOOTH);
                 bunnyIcon = new ImageIcon(scaledImg);
@@ -31,12 +31,12 @@ public class BunnyGame {
             }
 
             JLabel bunnyLabel = new JLabel(bunnyIcon);
-            int[] pos = {50, 50};
+            final int[] pos = {50, 50};
             bunnyLabel.setBounds(pos[0], pos[1], bunnyWidth, bunnyHeight);
             panel.add(bunnyLabel);
 
             // Movement step
-            int step = 20;
+            final int step = 20;
 
             // Arrow buttons
             JButton upBtn = new JButton("↑");
@@ -49,10 +49,27 @@ public class BunnyGame {
             leftBtn.setBounds(10, 340, 50, 30);
             rightBtn.setBounds(90, 340, 50, 30);
 
-            upBtn.addActionListener(e -> bunnyLabel.setLocation(pos[0], Math.max(0, pos[1] - step)));
-            downBtn.addActionListener(e -> bunnyLabel.setLocation(pos[0], Math.min(panel.getHeight() - bunnyHeight, pos[1] + step)));
-            leftBtn.addActionListener(e -> bunnyLabel.setLocation(Math.max(0, pos[0] - step), pos[1]));
-            rightBtn.addActionListener(e -> bunnyLabel.setLocation(Math.min(panel.getWidth() - bunnyWidth, pos[0] + step), pos[1]));
+            upBtn.setToolTipText("Move bunny up");
+            downBtn.setToolTipText("Move bunny down");
+            leftBtn.setToolTipText("Move bunny left");
+            rightBtn.setToolTipText("Move bunny right");
+
+            upBtn.addActionListener(e -> {
+                pos[1] = Math.max(0, pos[1] - step);
+                bunnyLabel.setLocation(pos[0], pos[1]);
+            });
+            downBtn.addActionListener(e -> {
+                pos[1] = Math.min(panel.getHeight() - bunnyHeight, pos[1] + step);
+                bunnyLabel.setLocation(pos[0], pos[1]);
+            });
+            leftBtn.addActionListener(e -> {
+                pos[0] = Math.max(0, pos[0] - step);
+                bunnyLabel.setLocation(pos[0], pos[1]);
+            });
+            rightBtn.addActionListener(e -> {
+                pos[0] = Math.min(panel.getWidth() - bunnyWidth, pos[0] + step);
+                bunnyLabel.setLocation(pos[0], pos[1]);
+            });
 
             panel.add(upBtn);
             panel.add(downBtn);
@@ -60,6 +77,7 @@ public class BunnyGame {
             panel.add(rightBtn);
 
             // Key movement
+
             panel.setFocusable(true);
             panel.addKeyListener(new KeyAdapter() {
                 @Override
@@ -75,6 +93,7 @@ public class BunnyGame {
 
             frame.setContentPane(panel);
             frame.setVisible(true);
+            panel.requestFocusInWindow();
         });
     }
 }
